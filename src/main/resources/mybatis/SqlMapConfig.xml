@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!--解决数据库下划线映射失败-->
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<setting name="logImpl" value="LOG4J"/>
+	</settings>
+
+<mappers>
+
+	<!-- 如果mapper.xml和mappre接口的名称相同且在同一个目录，这里可以不用配置 -->
+		<!-- <mapper resource="cn.itcast.ssm.mapper.UserMapper.xml"/>
+		<mapper resource="cn.itcast.ssm.mapper.ItemsMapper.xml"/> -->
+		
+</mappers>
+
+
+</configuration>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.cdu.itcast.mapper.TestsMapper" >
+  <resultMap id="BaseResultMap" type="cn.edu.cdu.itcast.po.Tests" >
+    <id column="test_id" property="testId" jdbcType="INTEGER" />
+    <result column="course_id" property="courseId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="total_grades" property="totalGrades" jdbcType="INTEGER" />
+    <result column="test_desc" property="testDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    test_id, course_id, title, total_grades, test_desc
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.cdu.itcast.po.TestsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tests
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tests
+    where test_id = #{testId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tests
+    where test_id = #{testId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.edu.cdu.itcast.po.TestsExample" >
+    delete from tests
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.edu.cdu.itcast.po.Tests" >
+    insert into tests (test_id, course_id, title, 
+      total_grades, test_desc)
+    values (#{testId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{totalGrades,jdbcType=INTEGER}, #{testDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.cdu.itcast.po.Tests" >
+    insert into tests
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="testId != null" >
+        test_id,
+      </if>
+      <if test="courseId != null" >
+        course_id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="totalGrades != null" >
+        total_grades,
+      </if>
+      <if test="testDesc != null" >
+        test_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="testId != null" >
+        #{testId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null" >
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="totalGrades != null" >
+        #{totalGrades,jdbcType=INTEGER},
+      </if>
+      <if test="testDesc != null" >
+        #{testDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.edu.cdu.itcast.po.TestsExample" resultType="java.lang.Integer" >
+    select count(*) from tests
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tests
+    <set >
+      <if test="record.testId != null" >
+        test_id = #{record.testId,jdbcType=INTEGER},
+      </if>
+      <if test="record.courseId != null" >
+        course_id = #{record.courseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalGrades != null" >
+        total_grades = #{record.totalGrades,jdbcType=INTEGER},
+      </if>
+      <if test="record.testDesc != null" >
+        test_desc = #{record.testDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tests
+    set test_id = #{record.testId,jdbcType=INTEGER},
+      course_id = #{record.courseId,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      total_grades = #{record.totalGrades,jdbcType=INTEGER},
+      test_desc = #{record.testDesc,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.cdu.itcast.po.Tests" >
+    update tests
+    <set >
+      <if test="courseId != null" >
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="totalGrades != null" >
+        total_grades = #{totalGrades,jdbcType=INTEGER},
+      </if>
+      <if test="testDesc != null" >
+        test_desc = #{testDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where test_id = #{testId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.cdu.itcast.po.Tests" >
+    update tests
+    set course_id = #{courseId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      total_grades = #{totalGrades,jdbcType=INTEGER},
+      test_desc = #{testDesc,jdbcType=VARCHAR}
+    where test_id = #{testId,jdbcType=INTEGER}
+  </update>
+  <!--附加mapper 通过课程id查出所有的实验-->
+  <select id="getTestsByCourseId" parameterType="int" resultType="cn.edu.cdu.itcast.po.Tests">
+        select a.* ,b.course_name FROM tests as a,courses as b WHERE a.course_id=b.course_id and b.course_id=#{courseId}
+</select>
+  <!--附加mapper，批量删除实验-->
+  <delete id="deleteTests">
+    delete from tests where test_id in
+    <foreach item="testId" collection="array" open="(" separator="," close=")">
+      #{testId}
+    </foreach>
+  </delete>
+
+</mapper>

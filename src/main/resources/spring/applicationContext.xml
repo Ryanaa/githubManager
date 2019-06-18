@@ -1,0 +1,72 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd 
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd ">
+<!-- 加载配置文件 -->
+<context:property-placeholder location="classpath:db.properties"/>
+
+<!-- 数据库连接池 -->
+<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+       <property name="driverClassName" value="${jdbc.driver}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+		<property name="maxActive" value="10"/>
+		<property name="maxIdle" value="5"/>
+</bean>	
+
+<!-- mapper配置 -->
+	<!-- 让spring管理sqlsessionfactory 使用mybatis和spring整合包中的 -->
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 数据库连接池 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 加载mybatis的全局配置文件 -->
+		<property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml" />
+	</bean>
+	
+		<!-- mapper扫描器 ,扫描到spring容器并自动注册-->
+<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 扫描包路径，如果需要扫描多个包，中间使用半角逗号隔开 -->
+		<property name="basePackage" value="cn.edu.cdu.itcast.mapper"></property>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+</bean>
+
+<!--<bean id="person" class="cn.edu.cdu.pojo.Person">-->
+	<!--<property name="a" value="1231" ></property>-->
+	<!--<property name="map" >-->
+		<!--<map>-->
+			<!--<entry key="key" value="aa"></entry>-->
+		<!--</map>-->
+	<!--</property>-->
+	<!--<property name="list" >-->
+		<!--<list value-type="java.lang.String">-->
+			<!--<value>-->
+<!--das-->
+			<!--</value>-->
+		<!--</list>-->
+	<!--</property>-->
+	<!--<property name="name" value="123">-->
+
+	<!--</property>-->
+	<!--<property name="array">-->
+		<!--<list value-type="java.lang.String">-->
+<!--<value>-->
+	<!--dasd-->
+<!--</value>-->
+		<!--</list>-->
+	<!--</property>-->
+	<!--<property name="product" ref="product" >-->
+	<!--</property>-->
+<!--</bean>-->
+
+</beans>

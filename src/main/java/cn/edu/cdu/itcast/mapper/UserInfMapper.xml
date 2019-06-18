@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.cdu.itcast.mapper.UserInfMapper" >
+  <resultMap id="BaseResultMap" type="cn.edu.cdu.itcast.po.UserInf" >
+    <id column="user_info_id" property="userInfoId" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="CHAR" />
+    <result column="password" property="password" jdbcType="CHAR" />
+    <result column="name" property="name" jdbcType="CHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="user_type_id" property="userTypeId" jdbcType="INTEGER" />
+    <result column="githubURL" property="githuburl" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_info_id, userid, password, name, state, user_type_id, githubURL
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.cdu.itcast.po.UserInfExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_inf
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_inf
+    where user_info_id = #{userInfoId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_inf
+    where user_info_id = #{userInfoId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.edu.cdu.itcast.po.UserInfExample" >
+    delete from user_inf
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.edu.cdu.itcast.po.UserInf" >
+    insert into user_inf (user_info_id, userid, password, 
+      name, state, user_type_id, 
+      githubURL)
+    values (#{userInfoId,jdbcType=INTEGER}, #{userid,jdbcType=CHAR}, #{password,jdbcType=CHAR}, 
+      #{name,jdbcType=CHAR}, #{state,jdbcType=CHAR}, #{userTypeId,jdbcType=INTEGER}, 
+      #{githuburl,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.cdu.itcast.po.UserInf" >
+    insert into user_inf
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userInfoId != null" >
+        user_info_id,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="userTypeId != null" >
+        user_type_id,
+      </if>
+      <if test="githuburl != null" >
+        githubURL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userInfoId != null" >
+        #{userInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=CHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=CHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+      <if test="userTypeId != null" >
+        #{userTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="githuburl != null" >
+        #{githuburl,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.edu.cdu.itcast.po.UserInfExample" resultType="java.lang.Integer" >
+    select count(*) from user_inf
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user_inf
+    <set >
+      <if test="record.userInfoId != null" >
+        user_info_id = #{record.userInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=CHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=CHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=CHAR},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=CHAR},
+      </if>
+      <if test="record.userTypeId != null" >
+        user_type_id = #{record.userTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.githuburl != null" >
+        githubURL = #{record.githuburl,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user_inf
+    set user_info_id = #{record.userInfoId,jdbcType=INTEGER},
+      userid = #{record.userid,jdbcType=CHAR},
+      password = #{record.password,jdbcType=CHAR},
+      name = #{record.name,jdbcType=CHAR},
+      state = #{record.state,jdbcType=CHAR},
+      user_type_id = #{record.userTypeId,jdbcType=INTEGER},
+      githubURL = #{record.githuburl,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.cdu.itcast.po.UserInf" >
+    update user_inf
+    <set >
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=CHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=CHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=CHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+      <if test="userTypeId != null" >
+        user_type_id = #{userTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="githuburl != null" >
+        githubURL = #{githuburl,jdbcType=CHAR},
+      </if>
+    </set>
+    where user_info_id = #{userInfoId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.cdu.itcast.po.UserInf" >
+    update user_inf
+    set userid = #{userid,jdbcType=CHAR},
+      password = #{password,jdbcType=CHAR},
+      name = #{name,jdbcType=CHAR},
+      state = #{state,jdbcType=CHAR},
+      user_type_id = #{userTypeId,jdbcType=INTEGER},
+      githubURL = #{githuburl,jdbcType=CHAR}
+    where user_info_id = #{userInfoId,jdbcType=INTEGER}
+  </update>
+  <!--附加mapper，通过课程id查询出教师姓名（学生选课模块）-->
+  <select id="getTeacherByCourseId" parameterType="int" resultType="cn.edu.cdu.itcast.po.UserInf">
+    SELECT * FROM user_inf as a ,courses as b WHERE a.user_info_id=b.teacher_id and b.course_id=#{courseId}
+  </select>
+</mapper>

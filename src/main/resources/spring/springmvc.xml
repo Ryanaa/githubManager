@@ -1,0 +1,76 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd 
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd ">
+
+	<!-- 配置Handler -->
+<!-- 	<bean id="itemsController1" name="/queryItems_test.action" class="cn.itcast.ssm.controller.ItemsController1" />
+ -->	<!-- 配置另外一个Handler -->
+<!-- 	<bean id="itemsController2" class="cn.itcast.ssm.controller.ItemsController2" />
+ -->	
+	<!-- 对于注解的Handler可以单个配置
+	实际开发中建议使用组件扫描
+	 -->
+	<!-- <bean class="cn.itcast.ssm.controller.ItemsController3" /> -->
+	<!-- 可以扫描controller、service、...
+	这里让扫描controller，指定controller的包
+	 -->
+<context:component-scan base-package="cn.edu.cdu.itcast.controller"></context:component-scan>
+	<!--注解映射器 -->
+	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/> -->
+	<!--注解适配器 -->
+	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
+	 -->
+
+	<!-- 使用 mvc:annotation-driven代替上边注解映射器和注解适配器配置
+	mvc:annotation-driven默认加载很多的参数绑定方法，
+	比如json转换解析器就默认加载了，如果使用mvc:annotation-driven不用配置上边的RequestMappingHandlerMapping和RequestMappingHandlerAdapter
+	实际开发时使用mvc:annotation-driven
+	 -->
+	<!-- 启用SpringMVC的注解功能,它会自动注册HandlerMapping、HandlerAdapter、ExceptionResolver的相关实例 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+<!--放行静态资源css\js等-->
+<mvc:default-servlet-handler />
+
+<!-- 视图解析器
+解析jsp解析，默认使用jstl标签，classpath下的得有jstl的包
+-->
+<bean
+class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+</bean>
+
+<!--<bean id="multipartResolver"-->
+<!--class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+		<!--设置上传文件的最大尺寸为5MB-->
+<!--<property name="maxUploadSize">-->
+<!--<value>5242880</value>-->
+<!--</property>-->
+<!--</bean>-->
+
+
+
+	<!-- 配置文件上传，如果没有使用文件上传可以不用配置，当然如果不配，那么配置文件中也不必引入上传组件包 -->
+	<!--<bean id="multipartResolver"-->
+		  <!--class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+		<!--&lt;!&ndash; 默认编码 &ndash;&gt;-->
+		<!--<property name="defaultEncoding" value="UTF-8" />-->
+		<!--&lt;!&ndash; 文件大小最大值 &ndash;&gt;-->
+		<!--<property name="maxUploadSize" value="10485760000" />-->
+		<!--&lt;!&ndash; 内存中的最大值 &ndash;&gt;-->
+		<!--<property name="maxInMemorySize" value="40960" />-->
+	<!--</bean>-->
+
+	<!-- 启动shiro注解(必须放在spring MVC 配置文件那边) -->
+	<!--<aop:config proxy-target-class="true"></aop:config>-->
+
+</beans>

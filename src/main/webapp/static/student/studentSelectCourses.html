@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>任务管理</title>
+    <meta charset="UTF-8">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../public/plugins/bootstrap-table/bootstrap-table.min.css">
+    <link rel="stylesheet" href="../public/plugins/ztree/css/metroStyle/metroStyle.css">
+    <link rel="stylesheet" href="../public/plugins/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../public/css/main.css">
+
+</head>
+<body>
+
+
+<div id="studentSelectCourse" v-cloak><!--列表信息加toolbar-->
+    <!--selectedCoursesTable表-->
+    <div v-show="showList==1" >
+        <div id="toolbar">
+            <button  class="btn btn-success " type="button" @click="add">
+                <i class="fa fa-plus"></i>&nbsp;&nbsp;<span class="bold">选课</span>
+            </button>
+
+            <button  class="btn btn-danger " type="button" @click="del">
+                <i class="fa fa-remove"></i>&nbsp;&nbsp;<span class="bold">退选</span>
+            </button>
+
+
+
+            <button v-show="hasPermission('sys:menu:delete')" class="btn btn-info " type="button" >
+                <i class="fa fa-desktop"></i>&nbsp;&nbsp;<span class="bold">分配</span>
+            </button>
+            <button v-show="hasPermission('sys:menu:delete')" class="btn btn-info " type="button" >
+                <i class="fa fa-desktop"></i>&nbsp;&nbsp;<span class="bold">查看</span>
+            </button>
+        </div>
+        <table id="selectedCoursesTable"></table>
+    </div>
+    <!--选课弹窗-->
+    <div class="modal fade" id="selectCourseDialog" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="createModalTitle">
+                            添加选课信息
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="courseName">课程名称</label>
+                                <select  class="form-control" id="courseName" name="courseName" placeholder="className">
+                                    <option value="pleaseSelect">
+                                        请点击选择课程
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label >教师</label>
+                                <input v-model="teacherName" type="text" class="form-control"  name="teachername" placeholder="TeacherName" readonly="readonly"></input>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" @click="submit">
+                            添加
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+
+</div>
+
+<script src="../public/libs/jquery.min.js"></script>
+<script src="../public/plugins/layer/layer.js"></script>
+
+<script src="../public/libs/bootstrap.min.js"></script>
+<script src="../public/libs/vue.min.js"></script>
+<script src="../public/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="../public/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="../public/plugins/ztree/jquery.ztree.all.min.js"></script>
+<script src="../public/js/common.js"></script>
+
+
+
+<script src="../public/plugins/layui/layui.js"></script>
+<script src="../public/js/student/studentSelectCourses.js"></script>
+
+
+
+</body>
+</html>

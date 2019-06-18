@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.cdu.itcast.mapper.GradesMapper" >
+  <resultMap id="BaseResultMap" type="cn.edu.cdu.itcast.po.Grades" >
+    <id column="grade_id" property="gradeId" jdbcType="INTEGER" />
+    <result column="student_do_test_id" property="studentDoTestId" jdbcType="INTEGER" />
+    <result column="result" property="result" jdbcType="INTEGER" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    grade_id, student_do_test_id, result, memo, update_date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.cdu.itcast.po.GradesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from grades
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from grades
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from grades
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.edu.cdu.itcast.po.GradesExample" >
+    delete from grades
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.edu.cdu.itcast.po.Grades" >
+    insert into grades (grade_id, student_do_test_id, result, 
+      memo, update_date)
+    values (#{gradeId,jdbcType=INTEGER}, #{studentDoTestId,jdbcType=INTEGER}, #{result,jdbcType=INTEGER}, 
+      #{memo,jdbcType=VARCHAR}, #{updateDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.cdu.itcast.po.Grades"  >
+    insert into grades
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gradeId != null" >
+        grade_id,
+      </if>
+      <if test="studentDoTestId != null" >
+        student_do_test_id,
+      </if>
+      <if test="result != null" >
+        result,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gradeId != null" >
+        #{gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="studentDoTestId != null" >
+        #{studentDoTestId,jdbcType=INTEGER},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.edu.cdu.itcast.po.GradesExample" resultType="java.lang.Integer" >
+    select count(*) from grades
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update grades
+    <set >
+      <if test="record.gradeId != null" >
+        grade_id = #{record.gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.studentDoTestId != null" >
+        student_do_test_id = #{record.studentDoTestId,jdbcType=INTEGER},
+      </if>
+      <if test="record.result != null" >
+        result = #{record.result,jdbcType=INTEGER},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update grades
+    set grade_id = #{record.gradeId,jdbcType=INTEGER},
+      student_do_test_id = #{record.studentDoTestId,jdbcType=INTEGER},
+      result = #{record.result,jdbcType=INTEGER},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      update_date = #{record.updateDate,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.cdu.itcast.po.Grades" >
+    update grades
+    <set >
+      <if test="studentDoTestId != null" >
+        student_do_test_id = #{studentDoTestId,jdbcType=INTEGER},
+      </if>
+      <if test="result != null" >
+        result = #{result,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=DATE},
+      </if>
+    </set>
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.cdu.itcast.po.Grades" >
+    update grades
+    set student_do_test_id = #{studentDoTestId,jdbcType=INTEGER},
+      result = #{result,jdbcType=INTEGER},
+      memo = #{memo,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=DATE}
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </update>
+<!--自定义-->
+  <resultMap type="cn.edu.cdu.itcast.po.CheckScores" id="checkScoreResultMap" >
+    <!-- 订单信息 -->
+    <!-- 用户信息 -->
+    <!-- 使用extends继承，不用在中配置订单信息和用户信息的映射 -->
+    <id column="test_id" property="testId"/>
+    <result column="course_id" property="courseId"/>
+    <result column="Course_name" property="CourseName"/>
+    <result column="student_id" property="studentId"/>
+    <result column="student_name" property="studentName"/>
+    <result column="teacher_name" property="teacherName"/>
+    <result column="testId" property="testId"/>
+    <result column="title" property="title"/>
+    <!-- 订单明细信息
+    一个订单关联查询出了多条明细，要使用collection进行映射
+    collection：对关联查询到多条记录映射到集合对象中
+    property：将关联查询到多条记录映射到cn.itcast.mybatis.po.Orders哪个属性
+    ofType：指定映射到list集合属性中pojo的类型
+     -->
+    <collection property="grades" ofType="cn.edu.cdu.itcast.po.Grades">
+      <!-- id：订单明细唯 一标识
+      property:要将订单明细的唯 一标识 映射到cn.itcast.mybatis.po.Orderdetail的哪个属性
+        -->
+      <id column="grade_id" property="gradeId"/>
+      <result column="student_do_test_id" property="studentDoTestId"/>
+      <result column="result" property="result"/>
+      <result column="memo" property="memo"/>
+    </collection>
+  </resultMap>
+
+  <select id="getSmallScores" parameterType="Map" resultMap="checkScoreResultMap">
+SELECT g.user_info_id as teacher_id, g.`name` as teacher_name, a.user_info_id as student_id,a.`name` as student_name, e.test_id,e.title,f.course_id,f.course_name, d.* from  user_inf as a,student_select_course as b, student_do_test as c, grades as d,tests as e,courses as f,user_inf as g
+WHERE a.user_info_id=b.student_id and b.student_select_course_id=c.student_select_course_id and c.student_do_test_id=d.student_do_test_id and c.test_id=e.test_id and e.course_id=f.course_id and g.user_info_id=f.teacher_id
+and a.user_info_id=#{studentId} and f.course_id=#{courseId}
+  </select>
+</mapper>

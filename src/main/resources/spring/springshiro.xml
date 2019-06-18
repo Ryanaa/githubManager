@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	<!--//anon：它对应的过滤器里面是空的,什么都没做,这里.do和.jsp后面的*表示参数,比方说login.jsp?main &ndash;&gt;-->
+	<!--//authc：该过滤器下的页面必须验证后才能访问,它是Shiro内置的一个拦截器org.apache.shiro.web.filter.authc.FormAuthenticationFilter-->
+	<!-- 自定义Realm -->
+	<bean id="MyRealm" class="cn.edu.cdu.itcast.shiro.UserRealm">
+		<property name="cachingEnabled" value="false"/>
+
+	</bean>
+
+
+
+
+	<!-- 即<property name="sessionMode" value="native"/>,详细说明见官方文档 -->
+	<!-- 这里主要是设置自定义的单Realm应用,若有多个Realm,可使用'realms'属性代替 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="MyRealm"/>
+		<!-- 配置sessionManager，提供session管理 -->
+
+
+
+	</bean>
+
+	<!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
+		<property name="arguments" ref="securityManager"/>
+	</bean>
+
+	<!-- Shiro主过滤器本身功能十分强大,其强大之处就在于它支持任何基于URL路径表达式的、自定义的过滤器的执行 -->
+	<!-- Web应用中,Shiro可控制的Web请求必须经过Shiro主过滤器的拦截,Shiro对基于Spring的Web应用提供了完美的支持 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+
+		<!-- Shiro的核心安全接口,这个属性是必须的 -->
+		<property name="securityManager" ref="securityManager"/>
+		<!--登录时的连接  -->
+		<property name="loginUrl" value="/static/login.html"/><!--登录页面，-->
+		<property name="successUrl" value="/static/sys/dayOff.html"/><!--登录成功页面，如果自己设置了返回页面，则不跳转-->
+		<property name="unauthorizedUrl" value="/error"/><!-- 没有权限跳转的地址 -->
+		<!-- 读取初始自定义权限内容-->
+		<!-- 如果使用authc验证,需重写实现rememberMe的过滤器,或配置formAuthenticationFilter的Bean -->
+		<property name="filterChainDefinitions">
+			<value>
+				/static/sys/dayOff.html=perms["perms1"]
+				/static/sys/leave.html=roles["admin"]
+
+				/static/json/**=anon
+				/static/public/**=anon
+				/logout=logout
+				/sys/login=anon
+				/static/login.html=anon <!--表示都可以访问-->
+				/sys/captcha.jpg=anon
+
+				<!--/error=authc-->
+				<!--/home=perms[home] &lt;!&ndash;perms表示需要该权限才能访问的页面&ndash;&gt;-->
+				<!--/admin=roles["admin"] &lt;!&ndash; roles["admin,user"] 只有拥有admin角色的用户才可访问，同时需要拥有多个角色的话，用引号引起来，中间用逗号隔开&ndash;&gt;-->
+				<!--/admin=anon-->
+				/**=authc <!--authc表示需要认证才能访问的页面-->
+
+			</value>
+		</property>
+	</bean>
+
+	<!-- shiro的说明周期交给spring管理 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+
+
+
+	<!--&lt;!&ndash;注册缓存管理器: 这里用ehcache插件(已被shiro集成)&ndash;&gt;-->
+	<!--<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">-->
+		<!--&lt;!&ndash;指定ehcache配置文件&ndash;&gt;-->
+		<!--<property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>-->
+	<!--</bean>-->
+</beans>
