@@ -36,6 +36,7 @@ public class GradesServiceImpl implements GradesService {
 
     @Override
     public List<CheckScores> getSmallScores(Map<String, Object> map) {
+
         return gradesMapper.getSmallScores(map);
 
     }

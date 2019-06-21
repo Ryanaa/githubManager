@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,19 +34,20 @@ public class GradesController {
         grade1.setResult(Integer.valueOf(scores.get("smallScore1")));
         grade1.setMemo(scores.get("memo1"));
         grade1.setStudentDoTestId(studentDoTestId);
+        grade1.setUpdateDate(new Date());
         gradesList.add(grade1);
 
         Grades grade2=new Grades();
         grade2.setResult(Integer.valueOf(scores.get("smallScore2")));
         grade2.setMemo(scores.get("memo2"));
-
+        grade2.setUpdateDate(new Date());
          grade2.setStudentDoTestId(studentDoTestId);
 
         gradesList.add(grade2);
         Grades grade3=new Grades();
         grade3.setResult(Integer.valueOf(scores.get("smallScore3")));
         grade3.setMemo(scores.get("memo3"));
-
+        grade3.setUpdateDate(new Date());
          grade3.setStudentDoTestId(studentDoTestId);
         gradesList.add(grade3);
           gradesService.insertIntoGrades(gradesList);

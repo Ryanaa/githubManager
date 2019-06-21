@@ -235,6 +235,7 @@
       <result column="student_do_test_id" property="studentDoTestId"/>
       <result column="result" property="result"/>
       <result column="memo" property="memo"/>
+      <result column="update_date" property="updateDate"/>
     </collection>
   </resultMap>
 

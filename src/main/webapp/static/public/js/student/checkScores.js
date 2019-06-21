@@ -27,6 +27,19 @@ $.ajax({
         });
     }
 });
+$("#myCourseName").change(function(){
+    $('#createTable').empty();//先清除表格，不然会重叠
+    courseId = $("#myCourseName option:selected").val();
+    $.ajax({
+        type: "POST",
+        url: "/grades/getSmallScores",
+        data: JSON.stringify({"courseId":courseId,"studentId":studentId}),//参数
+        success: function (result) {
+
+            drawScoreTable(result);
+        }
+    });
+});
 $.ajax({
     type: "POST",
     url: "/grades/getSmallScores",
@@ -37,57 +50,63 @@ $.ajax({
     }
 });
 function drawScoreTable(result) {
-    
     var table=$("#createTable");
-    var tr=$("<tr></tr>");
-    tr.appendTo(table);
-    var td=$("<td></td>");
-    td.appendTo(tr);
-    var tdcontent=$(" <h4>\n" +
-        "\n" +
-        "                    <a href=\"https://github.com/zwdcdu/is_analysis/blob/master/test1.md\" target=\"_blank\" >\n" +
-        "                        <span class=\"label label-success\">实验1:业务流程建模</span> </a>\n" +
-        "                    <a href=\"https://github.com/Ryanaa/is_analysis/tree/master/test1\" target=\"_blank\" > >> </a>\n" +
-        "\n" +
-        "\n" +
-        "\n" +
-        "                </h4>\n" +
-        "                <div class=\"input-group\">\n" +
-        "                    <span class=\"input-group-addon\">总分:</span>\n" +
-        "                    <span class=\"input-group-addon\" style=\"width: 300px\"><input type=\"text\" id=\"result22\"class=\"form-control\" placeholder=\"输入分数\" value=64></span>\n" +
-        "                    <span class=\"input-group-addon\">批改日期:2019-03-27 22:52:55</span>\n" +
-        "                    <span class=\"input-group-addon\">  <button type=\"button\" class=\"btn btn-primary\" >\n" +
-        "                        评分细则\n" +
-        "                    </button></span>\n" +
-        "\n" +
-        "                </div>\n" +
-        "                <div class=\"input-group\">\n" +
-        "                    <span class=\"input-group-addon\">实验创新性</span>\n" +
-        "                    <span class=\"input-group-addon\" >64</span>\n" +
-        "\n" +
-        "                    <textarea id=\"memo22\" rows=\"4\" class=\"form-control\" placeholder=\"输入评价\">1. 考试及成绩管理流程图源码正确，图片不清晰，\n" +
-        "流程说明太简单。32分。\n" +
-        "2. 客户维修服务流程图源码正确，图片不清晰，\n" +
-        "流程说明太简单。32分。</textarea>\n" +
-        "                </div>\n" +
-        "                <div class=\"input-group\">\n" +
-        "                    <span class=\"input-group-addon\">实验准确度</span>\n" +
-        "                    <span class=\"input-group-addon\" >64</span>\n" +
-        "\n" +
-        "                    <textarea id=\"memo32\" rows=\"4\" class=\"form-control\" placeholder=\"输入评价\">1. 考试及成绩管理流程图源码正确，图片不清晰，\n" +
-        "流程说明太简单。32分。\n" +
-        "2. 客户维修服务流程图源码正确，图片不清晰，\n" +
-        "流程说明太简单。32分。</textarea>\n" +
-        "                </div>\n" +
-        "                <div class=\"input-group\">\n" +
-        "                    <span class=\"input-group-addon\">实验完整性</span>\n" +
-        "                    <span class=\"input-group-addon\" >64</span>\n" +
-        "\n" +
-        "                    <textarea id=\"memo42\" rows=\"4\" class=\"form-control\" placeholder=\"输入评价\">1. 考试及成绩管理流程图源码正确，图片不清晰，\n" +
-        "流程说明太简单。32分。\n" +
-        "2. 客户维修服务流程图源码正确，图片不清晰，\n" +
-        "流程说明太简单。32分。</textarea>\n" +
-        "                </div>");
-    tdcontent.appendTo(td);
+    for (var i = 0; i <result.length; i++) {
+        // 算总分
+        var totalScore=0;
+        for (var j = 0; j < result[i]['grades'].length; j++) {
+          totalScore=totalScore + result[i]['grades'][j]['result'];
+        }
+        var tr=$("<tr></tr>");
+        tr.appendTo(table)
+        // var td=$("<td></td>");
+        // td.appendTo(tr);
+        var trcontent=" <h4>\n" +
+            "\n" +
+            "                    <a href=\"https://github.com/zwdcdu/is_analysis/blob/master/test1.md\" target=\"_blank\" >\n" +
+            "                        <span class=\"label label-success\">"+result[i]['title']+"</span> </a>\n" +
+            "                    <a href=\"https://github.com/Ryanaa/is_analysis/tree/master/test1\" target=\"_blank\" > >> </a>\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "                </h4>\n" +
+            "                <div class=\"input-group\">\n" +
+            "                    <span class=\"input-group-addon\">总分:</span>\n" +
+            "                    <span class=\"input-group-addon\" style=\"width: 300px\"><input type=\"text\" id=\"result22\"class=\"form-control\" placeholder=\"输入分数\" value="+totalScore+"></span>\n" +
+            "                    <span class=\"input-group-addon\">批改日期:"+Date(result[i]['grades'][0]['updateDate'])+"</span>\n" +
+            "                    <span class=\"input-group-addon\">  <button onclick='' type=\"button\" class=\"btn btn-primary\" >\n" +
+            "                        评分细则\n" +
+            "                    </button></span>\n" +
+            "\n" +
+            "                </div> ";
+
+
+
+      var smallScores="  \n" +
+          "                <div class=\"input-group\">\n" +
+          "                    <span class=\"input-group-addon\">实验创新性</span>\n" +
+          "                    <span class=\"input-group-addon\" >"+result[i]['grades'][0]['result']+"</span>\n" +
+          "\n" +
+          "                    <textarea id=\"memo2\" rows=\"4\" class=\"form-control\" placeholder=\"输入评价\">"+result[i]['grades'][0]['memo']+"</textarea>\n" +
+          "                </div>\n" +
+          "                <div class=\"input-group\">\n" +
+          "                    <span class=\"input-group-addon\">实验准确度</span>\n" +
+          "                    <span class=\"input-group-addon\" >"+result[i]['grades'][1]['result']+"</span>\n" +
+          "\n" +
+          "                    <textarea id=\"memo3\" rows=\"4\" class=\"form-control\" placeholder=\"输入评价\">"+result[i]['grades'][0]['memo']+"</textarea>\n" +
+          "                </div>\n" +
+          "                <div class=\"input-group\">\n" +
+          "                    <span class=\"input-group-addon\">实验完整性</span>\n" +
+          "                    <span class=\"input-group-addon\" >"+result[i]['grades'][2]['result']+"</span>\n" +
+          "\n" +
+          "                    <textarea id=\"memo4\" rows=\"4\" class=\"form-control\" placeholder=\"输入评价\">"+result[i]['grades'][0]['memo']+"</textarea>\n" +
+          "                </div>";
+
+         trcontent=trcontent+smallScores;
+
+         var Jtrcontent=$(trcontent);
+        Jtrcontent.appendTo(tr);
+
+    }
 }
 
